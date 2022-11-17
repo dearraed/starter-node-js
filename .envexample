@@ -1,0 +1,9 @@
+DB=mongodb://localhost:27017/starter-js
+PORT=5010
+SECRET=starterjs1234secret
+ExpiresIn=1d
+NODE_ENV=developpement
+EMAIL_USERNAME=your-gmail
+EMAIL_PASSWORD=your-password
+EMAIL_HOST=""
+EMAIL_PORT=""
