@@ -1,14 +1,15 @@
 const express = require("express");
 const path = require("path");
-const dotenv = require("dotenv").config();
+require("dotenv").config();
 const config = require("./config")
 const PORT = config.port || 5001;
 const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const connectDB = require("./db/connectDB");
+const { connect } = require("./db/connectDB");
 const { NotFoundError } = require("./middlewares/apiError");
 const globalErrorHandler = require("./middlewares/globalErrorHandler");
+const { baseUrl } = require("./config")
 
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
@@ -18,7 +19,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.resolve("./assets")));
 
-connectDB();
+connect();
 
 const options = {
   definition: {
@@ -30,7 +31,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:5000/api/v1",
+        url: baseUrl,
       },
     ],
   },

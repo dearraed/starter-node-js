@@ -13,38 +13,6 @@ const Joi = require("joi");
  * @swagger
  * components:
  *   schemas:
- *     User:
- *       type: object
- *       required:
- *         - name
- *         - lastName 
- *         - email 
- *         - password 
- *         - passwordConfirm 
- *         - tel 
- *         - work 
- *       properties:
- *         name:
- *           type: string
- *           description: The username
- *         lastName:
- *           type: string
- *           description: The last name
- *         email:
- *           type: string
- *           description: Email address
- *         password:
- *           type: string
- *           description: Minimum of 8 characters long
- *         passwordConfirm:
- *           type: string
- *           description: Should match with the password
- *         tel:
- *           type: string
- *           description: Should be 8 characters long
- *         work:
- *           type: string
- *           description: User's work
  *     Password:
  *       type: object
  *       properties:
@@ -69,6 +37,33 @@ const Joi = require("joi");
  *         password:
  *           type: string
  *           description: Minimum of 8 characters long
+ *     UpdatePassword:
+ *       type: object
+ *       properties:
+ *         currentPassword:
+ *          type: string
+ *          description: user's current password   
+ *         newPassword:
+ *          type: string
+ *          description: user's new password
+ *         newPasswordConfirm:
+ *          type: string
+ *          description: user's new password confirmation
+ *     ForgetPassword:
+ *       type: object
+ *       properties:
+ *         email:
+ *          type: string
+ *          description: user's email  
+ *     ResetPassword:
+ *       type: object
+ *       properties:
+ *         password:
+ *          type: string
+ *          description: user's new password   
+ *         psswordConfirm:
+ *          type: string
+ *          description: user's new password
  */
 
 exports.signup = Joi.object().keys({

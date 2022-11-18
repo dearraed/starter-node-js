@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "type": "module",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
+    "start:dev": "nodemon app.js",
     "seed": "node utils/seeder.js"
   },
   "keywords": [],

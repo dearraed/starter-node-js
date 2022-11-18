@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
   }
 })
 const mailOptions = {
-  from:"Test",
+  from: "starer-js@noreplay.com",
   to:options.email,
   subject:options.subject,
   text:options.message

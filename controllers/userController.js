@@ -27,14 +27,14 @@ exports.getUser = asyncHandler(async (req, res) => {
 exports.createUser = asyncHandler(async (req, res) => {
   try {
     const { email } = req.body.email;
-    const checkUser = await UserRepo.findOneByObj({ email });
+    const checkUser = await UserRepo.findOneByObj({ email: req.body.email });
     if (checkUser) {
       throw new BadRequestError("A user with this email already exists");
     }
   
-    const user = await UserRepo.createUser(...req.body);
-
-    return new SuccessMsgDataResponse(user, "User created successfully").send(
+    let user = await UserRepo.create(req.body);
+    let { password, ...data } = user._doc;
+    return new SuccessMsgDataResponse(data, "User created successfully").send(
       res
     );
   } catch (err) {
@@ -48,8 +48,8 @@ exports.getUsers = asyncHandler(async (req, res) => {
       page: parseInt(page, 10) || 1,
       limit: parseInt(perPage, 10) || 10,
     };
-    const users = await UserRepo.findByObjPaginate({});
-
+    const users = await UserRepo.findByObjPaginate({}, options);
+    console.log(users);
     if (!users) {
       return new SuccessMsgResponse("No users found").send(res);
     }
@@ -75,7 +75,13 @@ exports.deleteUser = asyncHandler(async (req, res) => {
 });
 exports.updateUser = asyncHandler(async (req, res) => {
   try {
-    const user = await UserRepo.findByIdAndUpdate( req.params.id, ...req.body);
+    if(req.body.email){
+      const checkUser = await UserRepo.findOneByObj({_id: { $ne: req.params.id }, email: req.body.email });
+      if (checkUser) {
+        throw new BadRequestError("A user with this email already exists");
+      }
+    }
+    const user = await UserRepo.findByIdAndUpdate( req.params.id, req.body);
     if (!user) {
       throw new NotFoundError("No user found with that id");
     }

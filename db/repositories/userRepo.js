@@ -1,6 +1,6 @@
 const userModel = require("../models/userModel");
 
-export default class UserRepo {
+module.exports = class UserRepo {
     static findOneByObjSelect(obj, select){
         return userModel.findOne(obj).select(select);
     }
@@ -21,11 +21,11 @@ export default class UserRepo {
         return userModel.findByIdAndUpdate(id, { $set : payload } , { new :true } );
     }
 
-    static findByObjPaginate(obj){
+    static findByObjPaginate(obj, options){
         return userModel.paginate(obj, options);
     }
     
     static findByIdAndDelete(id){
-        return userModel.findByIdAndDelete(id);
+        return userModel.findByIdAndUpdate(id, { $set : { deletedAt: Date.now() }} , { new :true } );
     }
 }

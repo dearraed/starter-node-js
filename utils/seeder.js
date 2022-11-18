@@ -1,11 +1,10 @@
-import connect from "../db/connectDB.js";
-import mongoose from 'mongoose';
-import bcryptjs from 'bcryptjs';
-import { seeder } from "./../config";
-import userModel from "./../db/models/userModel"
+require("dotenv").config();
+const { connect } = require("../db/connectDB");
+const mongoose = require('mongoose');
+const bcryptjs = require('bcryptjs');
+const { seeder } = require("./../config");
+const userModel = require("./../db/models/userModel");
 
-
-seed();
 
 let seedDelete = async () => {
     const collections = mongoose.modelNames();
@@ -18,12 +17,12 @@ let seedDelete = async () => {
 
 
 let seedAdmin = async () => {
+      let admins = await userModel.find({ role: "admin"});
       if(admins.length > 0){
          console.log("Admin user exist");
       } else {
         try{
-          let password = await bcryptjs.hash(seeder.adminPass, 12);
-          let admin = { name: seeder.adminName, lastname: seeder.adminLastName, email: seeder.adminEmail, password : password, passwordConfirm: password, role: "admin", createdAt: new Date(), updatedAt: new Date()  };
+          let admin = { name: seeder.adminName, lastName: seeder.adminLastName, email: seeder.adminEmail, password : seeder.adminPass, passwordConfirm: seeder.adminPass, role: "admin", createdAt: new Date(), updatedAt: new Date()  };
                 
           await userModel.create(admin);
           
@@ -39,5 +38,8 @@ let seedAdmin = async () => {
       await connect();
       await seedDelete();
       await seedAdmin();
+      process.exit(1);
   }
+
+  seed();
 

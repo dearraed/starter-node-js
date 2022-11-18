@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require('mongoose-paginate-v2');
-const validator = require("validator");
 const crypto = require("crypto");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -19,14 +18,9 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      minlength: 8,
-      required: true,
     },
     passwordConfirm: {
-      required: true,
       type: String,
-      minlength: 5,
-      maxlength: 20,
    },
     tel: {
       type: String,
@@ -44,6 +38,7 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "user"],
       default: "user",
     },
+    deletedAt: Date,
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -57,7 +52,8 @@ const userSchema = new mongoose.Schema(
 userSchema.plugin(mongoosePaginate)
 
 userSchema.pre(/^find/, function (next) {
-  this.select("-__v -createdAt -updatedAt -password");
+  this.find({ deletedAt: null })
+  this.select("-__v -createdAt -updatedAt -password -passwordConfirm");
   next();
 });
 

@@ -62,6 +62,7 @@ const { schemaValidator } = require("../../middlewares/schemaValidator");
  router.get(
   "/",
   authController.protect,
+  authController.restrictTo("admin"),
   schemaValidator(getUsers, "query"),
   userController.getUsers
 );
@@ -81,9 +82,8 @@ const { schemaValidator } = require("../../middlewares/schemaValidator");
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/User'
+ *               type: object
+ *               $ref: '#/components/schemas/User'
  *     security:
  *      - bearerAuth: []
  */
@@ -108,7 +108,7 @@ const { schemaValidator } = require("../../middlewares/schemaValidator");
  *        content:
  *            application/json:
  *                schema:
- *                   $ref: '#/components/schemas/User'
+ *                   $ref: '#/components/schemas/CreateUser'
  *     tags: [User]
  *     responses:
  *       200:
@@ -117,8 +117,7 @@ const { schemaValidator } = require("../../middlewares/schemaValidator");
  *           application/json:
  *             schema:
  *               type: object
- *               items:
- *                 $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/User'
  *     security:
  *      - bearerAuth: []
  *
@@ -153,9 +152,8 @@ const { schemaValidator } = require("../../middlewares/schemaValidator");
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/User'
+ *               type: object
+ *               $ref: '#/components/schemas/User'
  *     security:
  *      - bearerAuth: []
  */
@@ -184,9 +182,8 @@ const { schemaValidator } = require("../../middlewares/schemaValidator");
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/User'
+ *               type: object
+ *               $ref: '#/components/schemas/User'
  *     security:
  *      - bearerAuth: []
  */
@@ -198,5 +195,7 @@ const { schemaValidator } = require("../../middlewares/schemaValidator");
   schemaValidator(checkUserId, "params"),
   userController.deleteUser
 );
+
+
 
 module.exports = router;

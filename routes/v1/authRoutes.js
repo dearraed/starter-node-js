@@ -26,7 +26,7 @@ const router = express.Router();
  *        content:
  *            application/json:
  *                schema:
- *                   $ref: '#/components/schemas/User'
+ *                   $ref: '#/components/schemas/CreateUser'
  *     responses:
  *       200:
  *         description: The list of the register
@@ -63,7 +63,7 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               items:
- *                 $ref: '#/components/schemas/LoginSchema'
+ *                 $ref: '#/components/schemas/User'
  *
  */
 
@@ -82,8 +82,7 @@ const router = express.Router();
  *           application/json:
  *             schema:
  *               type: object
- *               items:
- *                 $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/User'
  *     security:
  *      - bearerAuth: []
  */
@@ -101,7 +100,7 @@ const router = express.Router();
  *        content:
  *            application/json:
  *                schema:
- *                   $ref: '#/components/schemas/Password'
+ *                   $ref: '#/components/schemas/UpdatePassword'
  *     responses:
  *       200:
  *         description: Password update
@@ -109,8 +108,7 @@ const router = express.Router();
  *           application/json:
  *             schema:
  *               type: object
- *               items:
- *                 $ref: '#/components/schemas/Password'
+ *               $ref: '#/components/schemas/Password'
  *     security:
  *      - bearerAuth: []
  */
@@ -142,8 +140,7 @@ const router = express.Router();
  *           application/json:
  *             schema:
  *               type: object
- *               items:
- *                 $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/User'
  *     security:
  *      - bearerAuth: []
  */
@@ -154,5 +151,62 @@ const router = express.Router();
    schemaValidator(updateMe),
    authController.updateMe
  );
+
+/**
+ * @swagger
+ * /forgotPassword:
+ *   post:
+ *     summary: forget password api
+ *     tags: [Auth]
+ *     requestBody:
+ *        required: true
+ *        content:
+ *            application/json:
+ *                schema:
+ *                   $ref: '#/components/schemas/ForgetPassword'
+ *     parameters:
+ *      - in: path
+ *        name: id
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               $ref: '#/components/schemas/User'
+ *     security:
+ *      - bearerAuth: []
+ */
+ router.post('/forgotPassword', authController.forgotPassword);
+
+ /**
+ * @swagger
+ * /resetPassword/{token}:
+ *   post:
+ *     summary: reset password api
+ *     tags: [Auth]
+ *     requestBody:
+ *        required: true
+ *        content:
+ *            application/json:
+ *                schema:
+ *                   $ref: '#/components/schemas/ResetPassword'
+ *     parameters:
+ *      - in: path
+ *        name: token
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               $ref: '#/components/schemas/User'
+ *     security:
+ *      - bearerAuth: []
+ */
+ router.patch('/resetPassword/:token', authController.resetPassword);
+
+
+
 
 module.exports = router;
