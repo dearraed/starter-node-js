@@ -164,16 +164,27 @@ const router = express.Router();
  *            application/json:
  *                schema:
  *                   $ref: '#/components/schemas/ForgetPassword'
- *     parameters:
- *      - in: path
- *        name: id
  *     responses:
  *       200:
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               $ref: '#/components/schemas/User'
+ *                type: object
+ *                properties:
+ *                 status:
+ *                  default : success 
+ *                 message:
+ *                  default: Token sent to email! 
+ *       400:
+ *         content:
+ *           application/json:
+ *             schema:
+ *                type: object
+ *                properties:
+ *                 status:
+ *                  default : fail 
+ *                 message:
+ *                  default: There was an error sending the email. Try again later!
  *     security:
  *      - bearerAuth: []
  */
@@ -182,7 +193,7 @@ const router = express.Router();
  /**
  * @swagger
  * /resetPassword/{token}:
- *   post:
+ *   patch:
  *     summary: reset password api
  *     tags: [Auth]
  *     requestBody:
@@ -201,8 +212,6 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               $ref: '#/components/schemas/User'
- *     security:
- *      - bearerAuth: []
  */
  router.patch('/resetPassword/:token', authController.resetPassword);
 

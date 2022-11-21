@@ -19,6 +19,10 @@ const { schemaValidator } = require("../../middlewares/schemaValidator");
  *     tags: [User]
  *     parameters:
  *        - in: query
+ *          name: search
+ *          schema:
+ *            type: string
+ *        - in: query
  *          name: name
  *          schema:
  *            type: string
@@ -38,6 +42,10 @@ const { schemaValidator } = require("../../middlewares/schemaValidator");
  *          name: tel
  *          schema:
  *            type: integer
+ *        - in: query
+ *          name: sort
+ *          schema:
+ *            type: string
  *        - in: query
  *          name: page
  *          schema:

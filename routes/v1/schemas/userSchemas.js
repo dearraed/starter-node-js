@@ -100,10 +100,12 @@ exports.getUsers = Joi.object({
   name: Joi.string().trim().min(3).max(30).optional(),
   lastName: Joi.string().trim().min(3).max(30).optional(),
   email: Joi.string().min(3).optional().email(),
-  tel: Joi.string().length(8).optional(),
+  tel: Joi.string().optional(),
   work: Joi.string().min(3).optional(),
   page: Joi.number().optional(),
-  perPage: Joi.number().optional()
+  perPage: Joi.number().optional(),
+  search: Joi.string().optional(),
+  sort: Joi.string().optional()
 
 })
 exports.checkUserId=Joi.object({

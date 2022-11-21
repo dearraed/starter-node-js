@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const asyncHandler = require("express-async-handler");
+const crypto = require('crypto');
 const {
   BadRequestError,
   UnauthorizedError,
@@ -19,12 +20,11 @@ const { tokenInfo } = require("./../config");
 const sendEmail = require("./../utils/email")
 
 const signToken = (id) => {
-  console.log("secret : ", tokenInfo.secret);
   return jwt.sign({ id }, tokenInfo.secret, {
     expiresIn: tokenInfo.expireIn,
   });
 };
-const createSendToken = (user, statusCode, req, res) => {
+const createSendToken = (user, req, res) => {
   const token = signToken(user._id);
 
   res.cookie("jwt", token, {
@@ -36,8 +36,7 @@ const createSendToken = (user, statusCode, req, res) => {
   });
 
   user.password = undefined;
-  console.log("user 2 : ", user);
-  console.log("token : ", token);
+
   return new SuccessResponse({
     user,
     token,
@@ -51,7 +50,7 @@ exports.login = asyncHandler(async (req, res) => {
   if(!user || ! (await user.correctPassword(password, user.password)))  {
     throw new BadRequestError("Incorrect email or password");
   }
-  createSendToken(user, 200, req, res);
+  createSendToken(user, req, res);
 });
 
 exports.signUp = asyncHandler(async (req, res) => {
@@ -165,20 +164,18 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   // 1) Get user based on POSTed email
   const user = await UserRepo.findOneByObj({ email: req.body.email });
   if (!user) {
-    return new NotFoundError('There is no user with email address.');
+    throw new NotFoundError('There is no user with email address.');
   }
 
   // 2) Generate the random reset token
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
-
+ 
   // 3) Send it to user's email
-  const resetURL = `${req.protocol}://${req.get(
-    'host'
-  )}/api/v1/users/resetPassword/${resetToken}`;
+  const resetURL = req.protocol + '://' + req.get('host') + '/api/v1/users/resetPassword/' + resetToken;
 
-  const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
-
+  const message = 'Forgot your password? \nSubmit a PATCH request with your new password and passwordConfirm to: ' + resetURL + '.\nIf you didn\'t forget your password, please ignore this email!';
+ 
   try {
     await sendEmail({
       email: user.email,
@@ -221,5 +218,5 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
   // 3) Update changedPasswordAt property for the user
   // 4) Log the user in, send JWT
-  createSendToken(user, 200, res);
+  createSendToken(user, req, res);
 });

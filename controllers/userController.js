@@ -48,8 +48,7 @@ exports.getUsers = asyncHandler(async (req, res) => {
       page: parseInt(page, 10) || 1,
       limit: parseInt(perPage, 10) || 10,
     };
-    const users = await UserRepo.findByObjPaginate({}, options);
-    console.log(users);
+    const users = await UserRepo.findByObjPaginate({}, options, req.query);
     if (!users) {
       return new SuccessMsgResponse("No users found").send(res);
     }

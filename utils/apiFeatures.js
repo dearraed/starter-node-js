@@ -11,9 +11,16 @@ class APIFeatures {
 
     // 1B) Advanced filtering
     let queryStr = JSON.stringify(queryObj);
+    
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+    
+    queryStr = JSON.parse(queryStr);
 
-    this.query = this.query.find(JSON.parse(queryStr));
+    let queryOption = Object.keys(queryStr).map((field) => ({
+      [field]: { $regex: queryStr[field], $options: 'i' },
+    }));
+   console.log(queryOption);
+    this.query = this.query.find({ $or: queryOption });
 
     return this;
   }
@@ -47,6 +54,17 @@ class APIFeatures {
 
     this.query = this.query.skip(skip).limit(limit);
 
+    return this;
+  }
+
+  search(searchFields) {
+    if (this.queryString?.search) {
+      const queryOption = searchFields.map((field) => ({
+        [field]: { $regex: this.queryString.search, $options: 'i' },
+      }));
+    
+      this.query = this.query.find({ $or: queryOption });
+    }
     return this;
   }
 }
