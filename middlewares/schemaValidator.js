@@ -1,6 +1,5 @@
 const Joi = require("joi");
 const { Types } = require("mongoose");
-const  catchAsync  = require("../utils/catchAsync");
 const { ValidationError } = require("./apiError");
 
 exports.isJson = (data) => {

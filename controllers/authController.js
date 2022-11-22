@@ -54,8 +54,8 @@ exports.login = asyncHandler(async (req, res) => {
 });
 
 exports.signUp = asyncHandler(async (req, res) => {
-  try {
-    const checkUser = await UserRepo.findOneByObj({ email: req.body.email }); 
+
+  const checkUser = await UserRepo.findOneByObj({ email: req.body.email }); 
     if (checkUser) {
       throw new BadRequestError("A user with this email already exists");
     }
@@ -67,22 +67,18 @@ exports.signUp = asyncHandler(async (req, res) => {
       user,
       token,
     }).send(res);
-  } catch (err) {
-    throw new BadRequestError(err.message);
-  }
+
 });
 
 exports.getMe = asyncHandler(async (req, res) => {
-  try {
+
     const freshUser = await UserRepo.findById(req.user.id);
 
     if (!freshUser) {
       throw new TokenExpiredError("Token expired");
     }
     return new SuccessResponse(freshUser).send(res);
-  } catch (err) {
-    throw new BadRequestError(err.message);
-  }
+ 
 });
 
 exports.protect = asyncHandler(async (req, res, next) => {
@@ -94,21 +90,19 @@ exports.protect = asyncHandler(async (req, res, next) => {
   if (!token) {
     throw new AccessTokenError("No token provided");
   }
-  try {
-    const decoded = await promisify(jwt.verify)(token, tokenInfo.secret);
-    const freshUser = await UserRepo.findById(decoded.id);
-    if (!freshUser) {
-      throw new UnauthorizedError(
-        "The user belonging to this token does no longer exist."
-      );
-    }
-   
-    req.user = freshUser;
-   
-    next();
-  } catch (err) {
-    throw new BadRequestError(err.message);
+
+  const decoded = await promisify(jwt.verify)(token, tokenInfo.secret);
+  const freshUser = await UserRepo.findById(decoded.id);
+  if (!freshUser) {
+    throw new UnauthorizedError(
+      "The user belonging to this token does no longer exist."
+    );
   }
+  
+  req.user = freshUser;
+  
+  next();
+ 
 });
 
 exports.restrictTo = (...roles) => {
