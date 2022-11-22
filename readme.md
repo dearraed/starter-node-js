@@ -1,4 +1,4 @@
-Starter JS architecture and improvements 
+Starter Node JS architecture and improvements 
 
 1- Best architecture refactored from open sources projects like 
 https://github.com/jonasschmedtmann/complete-node-bootcamp
@@ -11,7 +11,7 @@ https://github.com/jonasschmedtmann/complete-node-bootcamp
 
 5- Add seeder.
 
-6- Add pagination on model and get all apis.
+6- Add pagination on model on get all apis.
 
 7- Add custom response for pagination data.
 
