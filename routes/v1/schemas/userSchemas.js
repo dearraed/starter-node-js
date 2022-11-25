@@ -102,6 +102,7 @@ exports.getUsers = Joi.object({
   email: Joi.string().min(3).optional().email(),
   tel: Joi.string().optional(),
   work: Joi.string().min(3).optional(),
+  deleted: Joi.boolean().optional(),
   page: Joi.number().optional(),
   perPage: Joi.number().optional(),
   search: Joi.string().optional(),

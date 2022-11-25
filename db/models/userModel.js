@@ -52,12 +52,13 @@ const userSchema = new mongoose.Schema(
 userSchema.plugin(mongoosePaginate)
 
 userSchema.pre(/^find/, function (next) {
-  this.find({ deletedAt: null })
   this.select("-__v -createdAt -updatedAt -password -passwordConfirm");
   next();
 });
 
 userSchema.pre("save", function (next) {
+  if(this.isModified("email"))
+     this.email = this.email.toLocaleLowerCase();
   if (!this.isModified("password") || this.isNew) return next();
   this.passwordChangedAt = Date.now() - 1000;
   next();

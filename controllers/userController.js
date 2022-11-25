@@ -52,12 +52,13 @@ exports.getUsers = asyncHandler(async (req, res) => {
   
 });
 exports.deleteUser = asyncHandler(async (req, res) => {
-  
-  const user = await UserRepo.findByIdAndDelete(req.params.id);
+  const user = await UserRepo.findOneByObj({ _id: req.params.id, deletedAt: null});
+ 
   if (!user) {
-    return next(new NotFoundError(404, "No user found."));
+    return next(new NotFoundError(404, "User not registered or deleted"));
   }
-  return new SuccessMsgDataResponse(user, "User deleted successfully").send(
+  let deletedUser = await UserRepo.deleteUser(user);
+  return new SuccessMsgDataResponse(deletedUser, "User deleted successfully").send(
     res
   );
   

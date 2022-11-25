@@ -60,7 +60,7 @@ exports.signUp = asyncHandler(async (req, res) => {
       throw new BadRequestError("A user with this email already exists");
     }
     const user = await UserRepo.create(req.body)
-
+    user.password = undefined;
     const token = signToken(user._id);
 
     return new SuccessResponse({

@@ -15,14 +15,16 @@ class APIFeatures {
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
     
     queryStr = JSON.parse(queryStr);
-
-    let queryOption = Object.keys(queryStr).map((field) => ({
-      [field]: { $regex: queryStr[field], $options: 'i' },
-    }));
-   console.log(queryOption);
-    this.query = this.query.find({ $or: queryOption });
-
-    return this;
+    if(Object.keys(queryStr).length){
+      let queryOption = Object.keys(queryStr).map((field) => ({
+        [field]: { $regex: queryStr[field], $options: 'i' },
+      }));
+     
+      this.query = this.query.find({ $or: queryOption });
+  
+   }
+   return this;
+   
   }
 
   sort() {

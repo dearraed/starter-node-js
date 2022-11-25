@@ -43,6 +43,10 @@ const { schemaValidator } = require("../../middlewares/schemaValidator");
  *          schema:
  *            type: integer
  *        - in: query
+ *          name: deleted
+ *          schema:
+ *            type: string
+ *        - in: query
  *          name: sort
  *          schema:
  *            type: string
