@@ -27,6 +27,8 @@ EXECUTION :
 
 1- npm install
 
-2- npm run seed
+2- copy .envexample to .env
 
-3- npm startfor run / npm run start:dev for run on dev mode
+3- npm run seed
+
+4- npm startfor run / npm run start:dev for run on dev mode
