@@ -137,13 +137,13 @@ exports.updatePassword = asyncHandler(async (req, res) => {
 
 exports.updateMe = asyncHandler(async (req, res) => {
   
-  const checkUser = await UserRepo.findOneByObj({_id: { $ne: req.user.id }, email: req.body.email });
+  const checkUser = await UserRepo.findOneByObj({_id: { $ne: req.user._id }, email: req.body.email });
   if (checkUser)
   {
     throw new BadRequestError('A user with this email already exists')
   }
  
-  const user = await UserRepo.findByIdAndUpdate(req.user._id, { $set : req.body } ,{ new :true } );
+  const user = await UserRepo.findByIdAndUpdate(req.user._id, req.body);
     if (!user)
     {
       throw new NotFoundError("User not found");
