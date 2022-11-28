@@ -40,6 +40,27 @@ const { JoiObjectId } = require("../../../middlewares/schemaValidator");
  *         role:
  *           type: string
  *           description: user role admin or user
+ *     UpdateUser:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: The username
+ *         lastName:
+ *           type: string
+ *           description: The last name
+ *         email:
+ *           type: string
+ *           description: Email address
+ *         tel:
+ *           type: string
+ *           description: Should be 8 characters long
+ *         work:
+ *           type: string
+ *           description: User's work
+ *         status:
+ *           type: string
+ *           description: user status active or not
  *     CreateUser:
  *       type: object
  *       required:

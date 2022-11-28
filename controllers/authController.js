@@ -137,7 +137,7 @@ exports.updatePassword = asyncHandler(async (req, res) => {
 
 exports.updateMe = asyncHandler(async (req, res) => {
   const { email } = req.body;
-  const checkUser = await UserRepo.findOneByObj({ email });
+  const checkUser = await UserRepo.findOneByObj({_id: { $ne: req.params.id }, email: req.body.email });
   if (checkUser)
   {
     throw new BadRequestError('A user with this email already exists')

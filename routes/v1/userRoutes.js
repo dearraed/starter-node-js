@@ -158,7 +158,7 @@ const { schemaValidator } = require("../../middlewares/schemaValidator");
  *         content:
  *            application/json:
  *                schema:
- *                   $ref: '#/components/schemas/User'
+ *                   $ref: '#/components/schemas/UpdateUser'
  *     responses:
  *       200:
  *         content:

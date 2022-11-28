@@ -34,8 +34,7 @@ const router = express.Router();
  *           application/json:
  *             schema:
  *               type: object
- *               items:
- *                 $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/User'
  *
  *
  */
@@ -62,8 +61,7 @@ const router = express.Router();
  *           application/json:
  *             schema:
  *               type: object
- *               items:
- *                 $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/User'
  *
  */
 
@@ -132,7 +130,7 @@ const router = express.Router();
  *        content:
  *            application/json:
  *                schema:
- *                   $ref: '#/components/schemas/User'
+ *                   $ref: '#/components/schemas/UpdateUser'
  *     responses:
  *       200:
  *         description: Update user's profile

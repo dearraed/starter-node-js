@@ -22,3 +22,11 @@ https://github.com/jonasschmedtmann/complete-node-bootcamp
 10- Add config file that regroups .env variables.
 
 11- Implement manual soft delete.
+
+EXECUTION :
+
+1- npm install
+
+2- npm run seed
+
+3- npm startfor run / npm run start:dev for run on dev mode
