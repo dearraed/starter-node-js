@@ -55,7 +55,7 @@ exports.deleteUser = asyncHandler(async (req, res) => {
   const user = await UserRepo.findOneByObj({ _id: req.params.id, deletedAt: null});
  
   if (!user) {
-    return next(new NotFoundError(404, "User not registered or deleted"));
+    throw new NotFoundError("User not registered or deleted");
   }
   let deletedUser = await UserRepo.deleteUser(user);
   return new SuccessMsgDataResponse(deletedUser, "User deleted successfully").send(
